@@ -14,7 +14,7 @@ class Mario:
         self.batch_size = 64
 
         self.exploration_rate = 1
-        self.exploration_rate_decay = 0.999999 #0.99999975
+        self.exploration_rate_decay = 0.99999975
         self.exploration_rate_min = 0
         self.gamma = 0.9
 
@@ -42,7 +42,7 @@ class Mario:
         if checkpoint:
             self.load(checkpoint)
 
-        self.optimizer = torch.optim.Adam(self.policy_net.parameters(), lr=0.00001)
+        self.optimizer = torch.optim.Adam(self.policy_net.parameters(), lr=0.00001) # 0.000025
         self.loss_fn = torch.nn.SmoothL1Loss()
 
 
@@ -146,8 +146,8 @@ class Mario:
         if self.curr_step < self.burnin:
             return None, None
 
-        # if self.curr_step % self.learn_every != 0:
-        #     return None, None
+        if self.curr_step % self.learn_every != 0:
+            return None, None
 
         # Sample from memory
         state, next_state, action, reward, done = self.recall()
